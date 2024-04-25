@@ -54,7 +54,7 @@ private:
 
         } while (LogINFaild);
 
-        clsLogInRecord::AddUserRecordToFile();
+        CurrentUser.AddUserRecordToFile();
         clsMainScreen::ShowMainMenu();
         
     }

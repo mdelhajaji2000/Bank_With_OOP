@@ -149,6 +149,16 @@ private:
         return clsUser(enMode::EmptyMode, "", "", "", "", "", "", 0);
     }
 
+    string _CreatRecord()
+    {
+        clsDate Date = clsDate();
+        string record = to_string(Date.GetYear()) + "/" + to_string(Date.GetMonth()) + "/" + to_string(Date.GetDay());
+        record += " - " + Date.getClock();
+        record += "#//#" + this->UserName + "#//#" + this->Password + "#//#" + to_string(this->Permissions);
+
+        return record;
+    }
+
 public:
 
     enum enPermessions {
@@ -162,6 +172,14 @@ public:
         pManageUsers = 64
     };
 
+    struct stUserRegisterRecord
+    {
+        string Date_Time;
+        string UserName;
+        string Password;
+        int Permessions;
+    };
+
     clsUser(enMode Mode, string FirstName, string LastName,
         string Email, string Phone, string UserName, string Password,
         int Permissions) :
@@ -173,6 +191,55 @@ public:
         _Password = Password;
         _Permissions = Permissions;
     }
+
+    static clsUser::stUserRegisterRecord _ConvertRecordLineTostructData(string Line)
+    {
+        stUserRegisterRecord stRegestRecord;
+        vector<string> LineToData = clsString::Split(Line, "#//#");
+        stRegestRecord.Date_Time = LineToData.at(0);
+        stRegestRecord.UserName = LineToData.at(1);
+        stRegestRecord.Password = LineToData.at(2);
+        stRegestRecord.Permessions = stoi(LineToData.at(3));
+
+        return stRegestRecord;
+    }
+
+    static vector<clsUser::stUserRegisterRecord> GetUserRegisterRecord()
+    {
+        vector<clsUser::stUserRegisterRecord> vLogInRegister;
+
+        fstream Myfile;
+        Myfile.open("LogInRecords.txt", ios::in);
+        if (Myfile.is_open())
+        {
+            string Line;
+
+            stUserRegisterRecord RegsterLogIn;
+            while (getline(Myfile, Line))
+            {
+                RegsterLogIn = _ConvertRecordLineTostructData(Line);
+                vLogInRegister.push_back(RegsterLogIn);
+            }
+
+            Myfile.close();
+        }
+
+        return vLogInRegister;
+    }
+
+    void AddUserRecordToFile()
+    {
+        string filepath = "jj";
+
+        fstream Myfile;
+        Myfile.open(filepath, ios::app);
+        if (Myfile.is_open())
+        {
+            Myfile << _CreatRecord() << endl;
+            Myfile.close();
+        }
+    }
+
 
     void PrintUserIfo()
     {
