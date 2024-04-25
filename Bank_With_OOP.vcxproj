@@ -137,6 +137,7 @@
     <ClInclude Include="clsFindClientScreen.h" />
     <ClInclude Include="clsFindUser.h" />
     <ClInclude Include="clsInputValidation.h" />
+    <ClInclude Include="clsLogInRecord.h" />
     <ClInclude Include="clsLoginScreen.h" />
     <ClInclude Include="clsMainScreen.h" />
     <ClInclude Include="clsPerson.h" />
@@ -153,9 +154,13 @@
     <ClInclude Include="clsUtility.h" />
     <ClInclude Include="clsWithdarawScreen.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Bank_With_OOP.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

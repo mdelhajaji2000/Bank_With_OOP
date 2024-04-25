@@ -17,6 +17,10 @@ private:
     int month;
     int day;
 
+    int _Hour;
+    int _minutes;
+    int _Seconds;
+
     int _DaysInDate;
 
     static vector<int> GetDateFromString(string str, string Delemiter = "/")
@@ -101,7 +105,10 @@ public:
         return stringToDate(Date);
     }
 
-
+    string getClock()
+    {
+        return to_string(_Hour) + ":" + to_string(_minutes) + ":" + to_string(_Seconds);
+    }
 
     void print()
     {
@@ -600,6 +607,10 @@ clsDate::clsDate()
     this->month = timeinfo->tm_mon + 1;
     this->year = timeinfo->tm_year + 1900;
     this->_DaysInDate = DaysInDate(this->year, this->month, this->day); // Compute days since January 1st
+
+    this->_Hour = timeinfo->tm_hour;
+    this->_minutes = timeinfo->tm_min;
+    this->_Seconds = timeinfo->tm_sec;
 }
 
 clsDate::clsDate(int day, int month, int year)

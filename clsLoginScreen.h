@@ -5,6 +5,7 @@
 #include "Global.h"
 #include "clsMainScreen.h"
 #include "clsInputValidation.h"
+#include "clsLogInRecord.h"
 
 class clsLoginScreen :
     protected clsScreen
@@ -53,7 +54,7 @@ private:
 
         } while (LogINFaild);
 
-
+        clsLogInRecord::AddUserRecordToFile();
         clsMainScreen::ShowMainMenu();
         
     }
