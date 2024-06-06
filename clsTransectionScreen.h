@@ -6,6 +6,8 @@
 #include "clsDipositScreen.h"
 #include "clsWithdarawScreen.h"
 #include "clsTotaleBalancesScreen.h"
+#include "clsTransfer.h"
+#include "clsTransferLog.h"
 
 class clsTransectionScreen :
     protected clsScreen
@@ -17,7 +19,9 @@ private:
         Deposit = 1,
         withdraw = 2,
         TotaleBalances = 3,
-        MainMenu = 4
+        Transfer = 4,
+        TransferRecord = 5,
+        MainMenu = 6
     };
 
 
@@ -25,8 +29,8 @@ private:
     static int _ReadTransectionMenueOption()
     {
         int Option;
-        cout << setw(37) << "" << "What Do you whant : [1~4] ? : ";
-        Option = clsInputValidate::ReadNumberBetwin(1, 4, "Please Enter Number Betwin 1 ~ 4 : try again : ");
+        cout << setw(37) << "" << "What Do you whant : [1~6] ? : ";
+        Option = clsInputValidate::ReadNumberBetwin(1, 6, "Please Enter Number Betwin 1 ~ 4 : try again : ");
         return Option;
     }
 
@@ -52,6 +56,15 @@ private:
         case clsTransectionScreen::MainMenu:
             system("cls");
             _BackToMainMenu();
+            break;
+        case clsTransectionScreen::Transfer:
+            system("cls");
+            _TransferWindow();
+            _GoBackToTransectionMenu();
+        case clsTransectionScreen::TransferRecord:
+            system("cls");
+            _TransferLog();
+            _GoBackToTransectionMenu();
             break;
         default:
             break;
@@ -88,6 +101,16 @@ private:
         ShowTransectionMenue();
     }
 
+    static void _TransferWindow()
+    {
+        clsTransferScreen::ShowTransferScreen();
+    }
+
+    static void _TransferLog()
+    {
+        clsTransferLogScreen::ShowRegesterRecordScreen();
+    }
+
 public:
 
     static void ShowTransectionMenue () {
@@ -101,7 +124,9 @@ public:
         cout << setw(37) << left << "" << "[1] Deposit." << endl;
         cout << setw(37) << left << "" << "[2] Withdraw." << endl;
         cout << setw(37) << left << "" << "[3] TotaleBalances." << endl;
-        cout << setw(37) << left << "" << "[4] Main Menu." << endl;
+        cout << setw(37) << left << "" << "[4] Transfer." << endl;
+        cout << setw(37) << left << "" << "[5] Transfer Record." << endl;
+        cout << setw(37) << left << "" << "[6] Main Menu." << endl;
         cout << setw(37) << left << "" << "--------------------------------------" << endl;
 
         _PerformTransectionMenue((enTransectionOprions)_ReadTransectionMenueOption());

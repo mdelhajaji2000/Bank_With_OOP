@@ -105,6 +105,17 @@ public:
         return stringToDate(Date);
     }
 
+    string getDateInstring()
+    {
+        string Date;
+        Date += to_string(day);
+        Date += "/";
+        Date += to_string(month);
+        Date += "/";
+        Date += to_string(year);
+        return Date;
+    }
+
     string getClock()
     {
         return to_string(_Hour) + ":" + to_string(_minutes) + ":" + to_string(_Seconds);

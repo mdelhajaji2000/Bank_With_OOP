@@ -130,14 +130,16 @@
     <ClInclude Include="clsAddNewClient.h" />
     <ClInclude Include="clsAddUserScreen.h" />
     <ClInclude Include="clsBankClient.h" />
+    <ClInclude Include="clsCurrency.h" />
     <ClInclude Include="clsDate.h" />
     <ClInclude Include="clsDeletClientScreen.h" />
     <ClInclude Include="clsDeletUserScreen.h" />
     <ClInclude Include="clsDipositScreen.h" />
+    <ClInclude Include="clsEncryption.h" />
     <ClInclude Include="clsFindClientScreen.h" />
     <ClInclude Include="clsFindUser.h" />
     <ClInclude Include="clsInputValidation.h" />
-    <ClInclude Include="clsLogInRecord.h" />
+    <ClInclude Include="clsLoginRegesterScreen.h" />
     <ClInclude Include="clsLoginScreen.h" />
     <ClInclude Include="clsMainScreen.h" />
     <ClInclude Include="clsPerson.h" />
@@ -146,6 +148,8 @@
     <ClInclude Include="clsString.h" />
     <ClInclude Include="clsTotaleBalancesScreen.h" />
     <ClInclude Include="clsTransectionScreen.h" />
+    <ClInclude Include="clsTransfer.h" />
+    <ClInclude Include="clsTransferLog.h" />
     <ClInclude Include="clsUpdateClientScreen.h" />
     <ClInclude Include="clsUpdateUserScreen.h" />
     <ClInclude Include="clsUserMangementScreen.h" />

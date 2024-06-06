@@ -32,7 +32,7 @@ private:
 		cout << endl;
 		cout << setw(37) << "The Folowing are The Client Information : " << endl;
 		cout << setw(37) << "" << "===========================" << endl;
-		cout << setw(37) << "" << "- Account Number : " << Client.getAcountNumber() << endl;
+		cout << setw(37) << "" << "- Account Number : " << Client.getAccountNumber() << endl;
 		cout << setw(37) << "" << "- First Name		: " << Client.FirstName << endl;
 		cout << setw(37) << "" << "- Last Name		: " << Client.FirstName << endl;
 		cout << setw(37) << "" << "- Email			: " << Client.Email << endl;

@@ -3,8 +3,10 @@
 #include <string>
 #include "clsPerson.h"
 #include "clsString.h"
+#include "clsDate.h"
 #include <vector>
 #include <fstream>
+#include "clsEncryption.h"
 
 using namespace std;
 class clsUser : public clsPerson
@@ -25,7 +27,7 @@ private:
         vUserData = clsString::Split(Line, Seperator);
 
         return clsUser(enMode::UpdateMode, vUserData[0], vUserData[1], vUserData[2],
-            vUserData[3], vUserData[4], vUserData[5], stoi(vUserData[6]));
+            vUserData[3], vUserData[4], clsEncryption::DeEncrypt(vUserData[5]), stoi(vUserData[6]));
 
     }
 
@@ -38,7 +40,7 @@ private:
         UserRecord += User.Email + Seperator;
         UserRecord += User.Phone + Seperator;
         UserRecord += User.UserName + Seperator;
-        UserRecord += User.Password + Seperator;
+        UserRecord += clsEncryption::Encrypt(User.Password) + Seperator;
         UserRecord += to_string(User.Permissions);
 
         return UserRecord;
@@ -153,11 +155,13 @@ private:
     {
         clsDate Date = clsDate();
         string record = to_string(Date.GetYear()) + "/" + to_string(Date.GetMonth()) + "/" + to_string(Date.GetDay());
-        record += " - " + Date.getClock();
+        record += "#//#" + Date.getClock();
         record += "#//#" + this->UserName + "#//#" + this->Password + "#//#" + to_string(this->Permissions);
 
         return record;
     }
+
+    
 
 public:
 
@@ -169,7 +173,8 @@ public:
         pUpdateClient = 8,
         pFindClient = 16,
         pTransection = 32,
-        pManageUsers = 64
+        pManageUsers = 64,
+        pLoginRegester = 128,
     };
 
     struct stUserRegisterRecord
@@ -229,7 +234,7 @@ public:
 
     void AddUserRecordToFile()
     {
-        string filepath = "jj";
+        string filepath = "users_LogINrecords";
 
         fstream Myfile;
         Myfile.open(filepath, ios::app);
@@ -240,6 +245,36 @@ public:
         }
     }
 
+    struct stRecords
+    {
+        string date;
+        string time;
+        string user_name;
+        string password;
+        string permession;
+    };
+
+    static vector<stRecords> vGetLoginRecordsList()
+    {
+        vector<stRecords> vRecords;
+        vector<string> vLines;
+        
+        fstream Myfile;
+        Myfile.open("users_LogINrecords", ios::in);
+        if (Myfile.is_open())
+        {
+            string Line;
+            while (getline(Myfile, Line))
+            {
+                vLines = clsString::Split(Line, "#//#");
+                vRecords.push_back({vLines.at(0), vLines.at(1), vLines.at(2), vLines.at(3), vLines.at(4)});
+            }
+
+            Myfile.close();
+        }
+
+        return vRecords;
+    }
 
     void PrintUserIfo()
     {

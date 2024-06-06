@@ -11,6 +11,7 @@
 #include "clsUserMangementScreen.h"
 #include "clsShowClientsList.h"
 #include "clsUsers.h"
+#include "clsLoginRegesterScreen.h"
 #include "Global.h"
 
 class clsMainScreen : protected clsScreen
@@ -20,13 +21,13 @@ private:
 	{
 		eListClients = 1, eAddNewClient = 2, eDeletClient = 3,
 		eUpdateClient = 4, eFindClient = 5, eShowTransectionMenu = 6,
-		eManageUsers = 7, eExit = 8
+		eManageUsers = 7, eLoginResgeter, eExit = 9
 	};
 
 	static short _ReadMainMenuOptions()
 	{
 		cout << setw(37) << left << "" << "Choose What Do you Want [1~8] ? : ";
-		short Choice = clsInputValidate::ReadNumberBetwin(1, 8, "Number must be betwin 1 ~ 8 try agin => ");
+		short Choice = clsInputValidate::ReadNumberBetwin(1, 9, "Number must be betwin 1 ~ 8 try agin => ");
 		return Choice;
 	}
 
@@ -37,6 +38,7 @@ private:
 		system("pause>0");
 		ShowMainMenu();
 	}
+
 
 	static void _PerfomMainMenueOption(enMainMenueOptions Option)
 	{
@@ -119,6 +121,16 @@ private:
 			}
 			_GoBackToMainMenue();
 			break;
+		case clsMainScreen::eLoginResgeter:
+			if (CurrentUser.CheckPermession(clsUser::enPermessions::pLoginRegester))
+			{
+				_ShowRegesterLoginHistory();
+			}
+			else
+			{
+				_DrawScreenHeader("Action Denied... Contact Your Admin!", "");
+			}
+			break;
 		case clsMainScreen::eExit:
 
 			break;
@@ -168,6 +180,13 @@ private:
 		system("pause>0");
 	}
 
+	static void _ShowRegesterLoginHistory()
+	{
+		system("cls");
+		clsLoginRegesterScreen::ShowRegesterRecordScreen();
+		_GoBackToMainMenue();
+	}
+
 	static void _Log_out()
 	{
 		CurrentUser = clsUser::Find("", "");
@@ -192,7 +211,8 @@ public:
 		cout << setw(37) << left << "" << "\t[5] Find Client." << endl;
 		cout << setw(37) << left << "" << "\t[6] Transection." << endl;
 		cout << setw(37) << left << "" << "\t[7] Manage Users." << endl;
-		cout << setw(37) << left << "" << "\t[8] LogOut" << endl;
+		cout << setw(37) << left << "" << "\t[8] Login Regester Screen." << endl;
+		cout << setw(37) << left << "" << "\t[9] LogOut" << endl;
 
 		_PerfomMainMenueOption((enMainMenueOptions)_ReadMainMenuOptions());
 	}

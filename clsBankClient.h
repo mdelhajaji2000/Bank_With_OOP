@@ -9,6 +9,8 @@
 #include <vector>
 #include <fstream>
 
+#include "clsEncryption.h"
+
 using namespace std;
 
 string ClientBasepath = "clients.database";
@@ -35,7 +37,7 @@ private:
 		vector<string> vClientData;
 		vClientData = clsString::Split(Line, Delimiter);
 
-		return clsBankClient(enMode::UpdateMode, vClientData[0], vClientData[1], vClientData[2], vClientData[3], vClientData[4], vClientData[5], stod(vClientData[6]));
+		return clsBankClient(enMode::UpdateMode, vClientData[0], vClientData[1], vClientData[2], vClientData[3], vClientData[4], clsEncryption::DeEncrypt(vClientData[5]), stod(vClientData[6]));
 	}
 	
 	static clsBankClient _GetEmptyClientObject()
@@ -70,8 +72,8 @@ private:
 	{
 		string Del = "#//#"; // Del = delimiter = "#//#"
 		return Client.FirstName + Del + Client.LastName + Del + Client.Email + Del +
-			Client.Phone + Del + Client.getAcountNumber() + Del 
-			+ Client.PIN + Del + to_string(Client.AccountBalance);
+			Client.Phone + Del + Client.getAccountNumber() + Del 
+			+ clsEncryption::Encrypt(Client.PIN) + Del + to_string(Client.AccountBalance);
 	}
 
 	static void _SaveClientDataToFile(vector<clsBankClient> _vClients)
@@ -101,7 +103,7 @@ private:
 
 		for (clsBankClient& C : _vClients)
 		{
-			if (C._AccountNumber == getAcountNumber())
+			if (C._AccountNumber == getAccountNumber())
 			{
 				C = *this;
 				break;
@@ -127,6 +129,8 @@ private:
 		_addDataLineToFile(_ConvertObjectsToLines(Client));
 	}
 
+
+
 public:
 	clsBankClient(enMode Mode, string FirstName, string LastName, string Email, string Phone,
 		string AccNumber, string PINCode, float AccountBalance);
@@ -136,7 +140,88 @@ public:
 		return (_Mode == enMode::EmptyMode);
 	}
 
-	string getAcountNumber() // Account Number is read only member dont creat a set property !
+	struct stTransferRecord
+	{
+		string date;
+		string Client1_account_number;
+		string Client2_account_number;
+		string Transfer_amount;
+		string Client2_amount;
+		string Client1_amount;
+		string user_name;
+	};
+
+	static vector<stTransferRecord> vGetTransferLog()
+	{
+		vector<stTransferRecord> vRecords;
+		vector<string> vLines;
+
+		fstream Myfile;
+		Myfile.open("TransferLog.txt", ios::in);
+		if (Myfile.is_open())
+		{
+			string Line;
+			while (getline(Myfile, Line))
+			{
+				vLines = clsString::Split(Line, "#//#");
+				vRecords.push_back({vLines.at(0), vLines.at(1), vLines.at(2), vLines.at(3), vLines.at(4), vLines.at(5), vLines.at(6) });
+			}
+
+			Myfile.close();
+		}
+
+		return vRecords;
+	}
+
+	string _PrepareTransferLogRecord(float Amount, clsBankClient DestinationClient,
+		string UserName, string Seperator = "#//#")
+	{
+		clsDate Date;
+		string TransferLogRecord = "";
+		TransferLogRecord += Date.getDateInstring() + " - " + Date.getClock() + Seperator;
+		TransferLogRecord += getAccountNumber() + Seperator;
+		TransferLogRecord += DestinationClient.getAccountNumber() + Seperator;
+		TransferLogRecord += to_string(Amount) + Seperator;
+		TransferLogRecord += to_string(AccountBalance) + Seperator;
+		TransferLogRecord += to_string(DestinationClient.AccountBalance) + Seperator;
+		TransferLogRecord += UserName;
+		return TransferLogRecord;
+	}
+
+	void _RegisterTransferLog(float Amount, clsBankClient DestinationClient, string UserName)
+	{
+
+		string stDataLine = _PrepareTransferLogRecord(Amount, DestinationClient, UserName);
+
+		fstream MyFile;
+		MyFile.open("TransferLog.txt", ios::out | ios::app);
+
+		if (MyFile.is_open())
+		{
+
+			MyFile << stDataLine << endl;
+
+			MyFile.close();
+		}
+
+	}
+
+	bool Transfer(float Amount, clsBankClient& DestinationClient, string UserName)
+	{
+		if (Amount > AccountBalance)
+		{
+			return false;
+		}
+
+		Whitdraw(Amount);
+		DestinationClient.Deposit(Amount);
+		_RegisterTransferLog(Amount, DestinationClient, UserName);
+
+		return true;
+	}
+
+
+	string getAccountNumber() // Account Number is read only member dont creat a set property !
 	{
 		return _AccountNumber;
 	}
@@ -173,7 +258,7 @@ public:
 		cout << "\nFull Name      : " << FullName();
 		cout << "\nEmail          : " << Email;
 		cout << "\nPhone          : " << Phone;
-		cout << "\nAccount Number : " << getAcountNumber();
+		cout << "\nAccount Number : " << getAccountNumber();
 		cout << "\nPassword       : " << PIN;
 		cout << "\nBalance        : " << AccountBalance;
 		cout << "\n===========================";
@@ -195,7 +280,7 @@ public:
 			while (getline(Myfile, Line))
 			{
 				clsBankClient Client = _ConvertLineToClientObject(Line);
-				if (Client.getAcountNumber() == AccountNumber)
+				if (Client.getAccountNumber() == AccountNumber)
 				{
 					Myfile.close();
 					return Client;
@@ -221,7 +306,7 @@ public:
 			while (getline(Myfile, Line))
 			{
 				clsBankClient Client = _ConvertLineToClientObject(Line);
-				if (Client.getAcountNumber() == Accnumber && Client.PIN == PINCode)
+				if (Client.getAccountNumber() == Accnumber && Client.PIN == PINCode)
 				{
 					Myfile.close();
 					return Client;
@@ -283,7 +368,7 @@ public:
 
 		for (clsBankClient& C : vClients)
 		{
-			if (C.getAcountNumber() == Accnumber)
+			if (C.getAccountNumber() == Accnumber)
 			{
 				C._MarkedForDelet = true;
 				break;

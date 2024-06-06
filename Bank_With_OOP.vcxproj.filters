@@ -96,7 +96,19 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="clsLogInRecord.h">
+    <ClInclude Include="clsLoginRegesterScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsTransfer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsTransferLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsEncryption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsCurrency.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

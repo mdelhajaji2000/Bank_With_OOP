@@ -26,6 +26,7 @@ private:
         if (clsInputValidate::ReadYandN("\t\t Find Client    [Y = yes][N = no] ? : ")) per += clsUser::enPermessions::pFindClient;
         if (clsInputValidate::ReadYandN("\t\t Transection    [Y = yes][N = no] ? : ")) per += clsUser::enPermessions::pTransection;
         if (clsInputValidate::ReadYandN("\t\t Manage Users   [Y = yes][N = no] ? : ")) per += clsUser::enPermessions::pManageUsers;
+        if (clsInputValidate::ReadYandN("\t\t Login Record   [Y = yes][N = no] ? : ")) per += clsUser::enPermessions::pLoginRegester;
 
         return per;
     }

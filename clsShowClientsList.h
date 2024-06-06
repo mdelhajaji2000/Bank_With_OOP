@@ -8,10 +8,10 @@ class clsShowClientsList :
 {
 private:
 
-	static void PrintClientRecordLine(clsBankClient Client)
+	static void _PrintClientRecordLine(clsBankClient Client)
 	{
 
-		cout << "| " << setw(15) << left << Client.getAcountNumber();
+		cout << "| " << setw(15) << left << Client.getAccountNumber();
 		cout << "| " << setw(20) << left << Client.FullName();
 		cout << "| " << setw(12 + 5) << left << Client.Phone;
 		cout << "| " << setw(25) << left << Client.Email;
@@ -47,7 +47,7 @@ public:
 			for (clsBankClient Client : vClients)
 			{
 
-				PrintClientRecordLine(Client);
+				_PrintClientRecordLine(Client);
 				cout << endl;
 			}
 
