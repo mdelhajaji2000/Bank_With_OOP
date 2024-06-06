@@ -175,6 +175,7 @@ public:
         pTransection = 32,
         pManageUsers = 64,
         pLoginRegester = 128,
+        pCurrency_Exchange = 256
     };
 
     struct stUserRegisterRecord

@@ -21,13 +21,13 @@ private:
 	{
 		eListClients = 1, eAddNewClient = 2, eDeletClient = 3,
 		eUpdateClient = 4, eFindClient = 5, eShowTransectionMenu = 6,
-		eManageUsers = 7, eLoginResgeter, eExit = 9
+		eManageUsers = 7, eLoginResgeter = 8, Currency, eExit = 10
 	};
 
 	static short _ReadMainMenuOptions()
 	{
 		cout << setw(37) << left << "" << "Choose What Do you Want [1~8] ? : ";
-		short Choice = clsInputValidate::ReadNumberBetwin(1, 9, "Number must be betwin 1 ~ 8 try agin => ");
+		short Choice = clsInputValidate::ReadNumberBetwin(1, 10, "Number must be betwin 1 ~ 10 try agin => ");
 		return Choice;
 	}
 
@@ -132,12 +132,28 @@ private:
 			}
 			break;
 		case clsMainScreen::eExit:
-
 			break;
+		case clsMainScreen::Currency:
+			system("cls");
+			if (CurrentUser.CheckPermession(clsUser::enPermessions::pCurrency_Exchange))
+			{
+
+				_Currecy_Exchange();
+			}
+			else {
+				_DrawScreenHeader("Action Denied Please contact your admin...!", "");
+			}
+			_GoBackToMainMenue();
 		default:
 			break;
 		}
 	}
+
+	static void _Currecy_Exchange()
+	{
+
+	}
+
 	static void _ShowAllClientsScreen()
 	{
 		clsShowClientsList::PrintClientsTable();
