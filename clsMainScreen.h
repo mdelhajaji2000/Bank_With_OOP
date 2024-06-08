@@ -12,6 +12,7 @@
 #include "clsShowClientsList.h"
 #include "clsUsers.h"
 #include "clsLoginRegesterScreen.h"
+#include "clsCurrencyMainScreen.h"
 #include "Global.h"
 
 class clsMainScreen : protected clsScreen
@@ -151,7 +152,7 @@ private:
 
 	static void _Currecy_Exchange()
 	{
-
+		clsCurrencyMainScreen::MenueScreen();
 	}
 
 	static void _ShowAllClientsScreen()
@@ -228,7 +229,8 @@ public:
 		cout << setw(37) << left << "" << "\t[6] Transection." << endl;
 		cout << setw(37) << left << "" << "\t[7] Manage Users." << endl;
 		cout << setw(37) << left << "" << "\t[8] Login Regester Screen." << endl;
-		cout << setw(37) << left << "" << "\t[9] LogOut" << endl;
+		cout << setw(37) << left << "" << "\t[9] Currecy Exchange." << endl;
+		cout << setw(37) << left << "" << "\t[10] LogOut" << endl;
 
 		_PerfomMainMenueOption((enMainMenueOptions)_ReadMainMenuOptions());
 	}
